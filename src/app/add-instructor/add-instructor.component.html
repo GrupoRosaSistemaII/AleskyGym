@@ -1,0 +1,81 @@
+<div class="page-layout">
+
+    <app-sidebar></app-sidebar>
+
+
+    <div class="registrar-instructor-container">
+        <div class="header">
+            <h1>Registrar Nuevo Instructor</h1>
+            <p class="subtitle">Completa el formulario para añadir un nuevo instructor al gimnasio</p>
+        </div>
+
+        <div class="form-container">
+            <form [formGroup]="instructorForm" (ngSubmit)="onSubmit()">
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Información del Instructor</h2>
+                        <p class="section-description">Ingrese los datos personales y de contacto del instructor</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Carlos"
+                                [class.error]="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched">
+                            <div class="error-message"
+                                *ngIf="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched">
+                                El nombre es obligatorio
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" formControlName="apellido" placeholder="Ej: Méndez"
+                                [class.error]="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched">
+                            <div class="error-message"
+                                *ngIf="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched">
+                                El apellido es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" formControlName="telefono" placeholder="Ej: 54852369"
+                            [class.error]="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched">
+                        <div class="error-message"
+                            *ngIf="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched">
+                            Ingrese un número de teléfono válido
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico</label>
+                        <input type="email" id="correo" formControlName="correo"
+                            placeholder="Ej: Carlos.mendezejemplo.com"
+                            [class.error]="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched">
+                        <div class="error-message"
+                            *ngIf="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched">
+                            Ingrese un correo electrónico válido
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Registrar Instructor
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

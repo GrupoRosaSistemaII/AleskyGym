@@ -1,0 +1,213 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+
+
+
+  <div class="crear-clase-container">
+    <div class="header">
+      <div>
+        <h1>Crear Nueva Clase</h1>
+        <p class="subtitle">Completa el formulario para añadir una nueva clase al horario</p>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          <!-- https://feathericons.dev/?search=save&iconset=feather -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
+            fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
+
+          Crear Clase
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="claseForm" (ngSubmit)="onSubmit()" class="form-grid">
+      <!-- Columna izquierda: Información Básica -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Información Básica</h2>
+          <p class="section-description">Detalles generales de la clase</p>
+        </div>
+
+        <div class="form-group">
+          <label for="nombre">Nombre de la clase <span class="required">*</span></label>
+          <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Yoga flow"
+            [class.error]="claseForm.get('nombre')?.invalid && claseForm.get('nombre')?.touched">
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="4"
+            placeholder="Describe en qué consiste la clase"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="categoria">Categoría <span class="required">*</span></label>
+          <div class="select-wrapper">
+            <select id="categoria" formControlName="categoria"
+              [class.error]="claseForm.get('categoria')?.invalid && claseForm.get('categoria')?.touched">
+              <option value="" disabled selected>Seleccione una categoría</option>
+              @for (categoria of categorias; track categoria) {
+              <option [value]="categoria">{{ categoria }}</option>
+              }
+            </select>
+            <div class="select-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sala">Sala<span class="required">*</span></label>
+          <div class="select-wrapper">
+            <select id="sala" formControlName="sala"
+              [class.error]="claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched">
+              <option value="" disabled selected>Seleccione una sala</option>
+              @for (sala of salas; track sala) {
+              <option [value]="sala">{{ sala }}</option>
+              }
+            </select>
+            <div class="select-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="capacidad">Capacidad (alumnos)<span class="required">*</span></label>
+          <input type="number" id="capacidad" formControlName="capacidad" placeholder="Ej: 20"
+            [class.error]="claseForm.get('capacidad')?.invalid && claseForm.get('capacidad')?.touched">
+        </div>
+
+        <div class="form-group">
+          <label for="instructor">Instructor<span class="required">*</span></label>
+          <div class="select-wrapper">
+            <select id="instructor" formControlName="instructor"
+              [class.error]="claseForm.get('instructor')?.invalid && claseForm.get('instructor')?.touched">
+              <option value="" disabled selected>Seleccione una Instructor</option>
+              @for (instructor of instructores; track instructor) {
+              <option [value]="instructor">{{ instructor }}</option>
+              }
+            </select>
+            <div class="select-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: Programación de Horarios -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Programación de Horarios</h2>
+          <p class="section-description">Define cuándo se impartirá la clase</p>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fechaInicio">Fecha inicio <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="date" id="fechaInicio" formControlName="fechaInicio"
+                [class.error]="claseForm.get('fechaInicio')?.invalid && claseForm.get('fechaInicio')?.touched">
+              <div class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                  <line x1="16" x2="16" y1="2" y2="6"></line>
+                  <line x1="8" x2="8" y1="2" y2="6"></line>
+                  <line x1="3" x2="21" y1="10" y2="10"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fechaFin">Fecha Fin <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="date" id="fechaFin" formControlName="fechaFin"
+                [class.error]="claseForm.get('fechaFin')?.invalid && claseForm.get('fechaFin')?.touched">
+              <div class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                  <line x1="16" x2="16" y1="2" y2="6"></line>
+                  <line x1="8" x2="8" y1="2" y2="6"></line>
+                  <line x1="3" x2="21" y1="10" y2="10"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="horaInicio">Hora inicio <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="time" id="horaInicio" formControlName="horaInicio"
+                [class.error]="claseForm.get('horaInicio')?.invalid && claseForm.get('horaInicio')?.touched">
+              <div class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="horaFin">Hora Fin <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <input type="time" id="horaFin" formControlName="horaFin"
+                [class.error]="claseForm.get('horaFin')?.invalid && claseForm.get('horaFin')?.touched">
+              <div class="input-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen de horario -->
+        <div class="schedule-summary" *ngIf="resumenVisible">
+          <div class="summary-item">
+            <div class="summary-label">Fecha y Hora</div>
+            <div class="summary-value">{{ obtenerFechaFormateada() }}</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Duración</div>
+            <div class="summary-value">{{ obtenerDuracion() }}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-footer">
+      <div class="required-note">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" x2="12" y1="8" y2="12"></line>
+          <line x1="12" x2="12.01" y1="16" y2="16"></line>
+        </svg>
+        Los campos marcador con <span class="required">*</span> son obligatorios
+      </div>
+    </div>
+  </div>
+</div>
