@@ -22,15 +22,11 @@ export class SidebarComponent {
       icon: "calendar",
     },
     {
-      label: "Instructores",
+      label: "Registrar Instructores",
       route: "/instructores",
       icon: "users",
     },
-    {
-      label: "Miembros",
-      route: "/miembros",
-      icon: "users",
-    },
+     
     {
       label: "Ajustes",
       route: "/ajustes",

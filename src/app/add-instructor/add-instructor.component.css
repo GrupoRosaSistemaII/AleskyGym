@@ -4,14 +4,20 @@
 
 .registrar-instructor-container {
     padding: 24px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-}
+ }
+
 
 .header {
-    margin-bottom: 24px;
-}
+   display: flex;
+
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 24px;
+   width: 100%;
+ }
 
 h1 {
     font-size: 24px;
@@ -26,16 +32,22 @@ h1 {
     margin: 4px 0 0 0;
 }
 
-.form-container {
-    width: 100%;
-}
+
 
 .form-section {
     background-color: white;
+    width: 50%;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0 auto;
+    /* centra horizontalmente */
     border-radius: 8px;
     border: 1px solid #e5e7eb;
-    padding: 24px;
+    padding: 30px;
+    /* mismo padding que Crear Clase */
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .section-header {
@@ -60,7 +72,30 @@ h2 {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 20px;
+    width: 100%;
 }
+
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+}
+
+
+@media (max-width: 992px) {
+    .form-grid {
+        gap: 20px;
+    }
+
+    .form-section {
+        width: 100%;
+        padding: 24px;
+    }
+}
+
+
 
 .form-group {
     margin-bottom: 20px;
@@ -102,7 +137,7 @@ input.error {
     margin-top: 4px;
 }
 
-.form-actions {
+.actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -142,7 +177,7 @@ input.error {
     background-color: #e31b4d;
 }
 
-/* Ajuste para integración con sidebar */
+/* Ajuste de margen lateral según sidebar */
 @media (min-width: 769px) {
     .registrar-instructor-container {
         margin-left: 220px;
@@ -154,20 +189,5 @@ input.error {
     .registrar-instructor-container {
         margin-left: 70px;
         width: calc(100% - 70px);
-        padding: 16px;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-        justify-content: center;
     }
 }

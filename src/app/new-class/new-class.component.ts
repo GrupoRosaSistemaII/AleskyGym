@@ -31,71 +31,19 @@ export class NewClassComponent {
       sala: ["", Validators.required],
       capacidad: ["", [Validators.required, Validators.min(1)]],
       instructor: ["", Validators.required],
-      fechaInicio: ["", Validators.required],
-      fechaFin: ["", Validators.required],
-      horaInicio: ["", Validators.required],
-      horaFin: ["", Validators.required],
-    })
+        })
 
-    // Escuchar cambios en los campos de fecha y hora para mostrar el resumen
-    this.claseForm.get("fechaInicio")?.valueChanges.subscribe(() => this.actualizarResumen())
-    this.claseForm.get("horaInicio")?.valueChanges.subscribe(() => this.actualizarResumen())
-  }
+     }
 
-  actualizarResumen() {
-    const fechaInicio = this.claseForm.get("fechaInicio")?.value
-    const horaInicio = this.claseForm.get("horaInicio")?.value
+   
 
-    if (fechaInicio && horaInicio) {
-      this.resumenVisible = true
-    }
-  }
-
-  obtenerDuracion(): string {
-    const horaInicio = this.claseForm.get("horaInicio")?.value;
-    const horaFin = this.claseForm.get("horaFin")?.value;
-
-    if (!horaInicio || !horaFin) {
-      return "";
-    }
-
-    const [hInicio, mInicio] = horaInicio.split(":").map(Number);
-    const [hFin, mFin] = horaFin.split(":").map(Number);
-
-    const minutosInicio = hInicio * 60 + mInicio;
-    const minutosFin = hFin * 60 + mFin;
-
-    let duracion = minutosFin - minutosInicio;
-    if (duracion < 0) duracion += 24 * 60;
-
-    const horas = Math.floor(duracion / 60);
-    const minutos = duracion % 60;
-
-    return `${horas}h ${minutos}m`;
-  }
+   
 
 
-  obtenerFechaFormateada(): string {
-  const raw = this.claseForm.get("fechaInicio")?.value;
-  if (!raw) return "";
-
-  const fecha = new Date(raw);
-
-  // Compensa el desfase UTC:
-  fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset());
-
-  const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
-  const diaNumero = fecha.getDate();
-  const hora      = fecha.getHours().toString().padStart(2, '0');
-  const minutos   = fecha.getMinutes().toString().padStart(2, '0');
-
-  return `${this.capitalizar(diaSemana)} ${diaNumero}, ${hora}:${minutos}`;
-}
+   
 
 
-  private capitalizar(texto: string): string {
-    return texto.charAt(0).toUpperCase() + texto.slice(1);
-  }
+   
 
 
   onSubmit() {

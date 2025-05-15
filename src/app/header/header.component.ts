@@ -16,8 +16,7 @@ export class HeaderComponent {
     { label: "Inicio", route: "/inicio" },
     { label: "Clases", route: "/clases" },
     { label: "Instructores", route: "/instructores" },
-    { label: "Miembros", route: "/miembros" },
-  ];
+   ];
 
   
 }
