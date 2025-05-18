@@ -1,126 +1,176 @@
-<div class="page-layout">
-  <app-sidebar></app-sidebar>
+<div class="flex min-h-screen bg-gray-800 text-gray-100 dark:bg-gray-900 dark:text-gray-100">
 
-
-
-  <div class="crear-clase-container">
-    <div class="header">
+  <!-- Contenido principal -->
+  <main class="flex-1 p-6 sm:p-8 ">
+    <!-- Header -->
+    <header class=" lg:pl-56 mb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4">
       <div>
-        <h1>Crear Nueva Clase</h1>
-        <p class="subtitle">Completa el formulario para añadir una nueva clase al horario</p>
+        <h1 class="text-3xl font-semibold">Crear Nueva Clase</h1>
+        <p class="mt-1 text-sm text-gray-300 dark:text-gray-400">
+          Completa el formulario para añadir una nueva clase al horario
+        </p>
       </div>
-      <div class="actions">
-        <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">
-          <!-- https://feathericons.dev/?search=save&iconset=feather -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
-            fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+      <div class="flex gap-3">
+        <button type="button" (click)="cancelar()"
+          class="h-12 px-4 border border-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancelar
+        </button>
+        <button type="button" (click)="onSubmit()"
+          class="h-12 px-4 bg-gray-600 text-gray-100 rounded-lg hover:bg-gray-700 transition flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
             <polyline points="17 21 17 13 7 13 7 21" />
             <polyline points="7 3 7 8 15 8" />
           </svg>
-
-          Crear Clase
+          <span>Crear Clase</span>
         </button>
       </div>
-    </div>
+    </header>
 
-    <form [formGroup]="claseForm" (ngSubmit)="onSubmit()" class="form-grid">
-       <div class="form-section">
-        <div class="section-header">
-          <h2>Información Básica</h2>
-          <p class="section-description">Detalles generales de la clase</p>
+    <!-- Formulario -->
+    <form [formGroup]="claseForm" (ngSubmit)="onSubmit()"
+      class="bg-gray-700 dark:bg-gray-800 rounded-xl shadow p-8 max-w-4xl mx-auto space-y-6">
+      <!-- Sección: Información Básica -->
+      <div class="space-y-4">
+        <div>
+          <h2 class="text-xl font-semibold">Información Básica</h2>
+          <p class="text-sm text-gray-300 dark:text-gray-400">Detalles generales de la clase</p>
         </div>
 
-        <div class="form-group">
-          <label for="nombre">Nombre de la clase <span class="required">*</span></label>
-          <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Yoga flow"
-            [class.error]="claseForm.get('nombre')?.invalid && claseForm.get('nombre')?.touched">
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nombre -->
+          <div class="space-y-1">
+            <label for="nombre" class="block text-sm font-medium text-gray-300">
+              Nombre de la clase <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Yoga flow"
+              [class.border-red-500]="claseForm.get('nombre')?.invalid && claseForm.get('nombre')?.touched" class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                     focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                     transition duration-150 ease-in-out text-gray-100" />
+            <p *ngIf="claseForm.get('nombre')?.invalid && claseForm.get('nombre')?.touched"
+              class="text-xs text-red-500">
+              El nombre es obligatorio
+            </p>
+          </div>
 
-        <div class="form-group">
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" formControlName="descripcion" rows="4"
-            placeholder="Describe en qué consiste la clase"></textarea>
-        </div>
+          <!-- Capacidad -->
+          <div class="space-y-1">
+            <label for="capacidad" class="block text-sm font-medium text-gray-300">
+              Capacidad (alumnos) <span class="text-red-400">*</span>
+            </label>
+            <input type="number" id="capacidad" formControlName="capacidad" placeholder="Ej: 20"
+              [class.border-red-500]="claseForm.get('capacidad')?.invalid && claseForm.get('capacidad')?.touched" class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                     focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                     transition duration-150 ease-in-out text-gray-100" />
+            <p *ngIf="claseForm.get('capacidad')?.invalid && claseForm.get('capacidad')?.touched"
+              class="text-xs text-red-500">
+              La capacidad es obligatoria
+            </p>
+          </div>
 
-        <div class="form-group">
-          <label for="categoria">Categoría <span class="required">*</span></label>
-          <div class="select-wrapper">
+          <!-- Categoría -->
+          <div class="space-y-1 relative">
+            <label for="categoria" class="block text-sm font-medium text-gray-300">
+              Categoría <span class="text-red-400">*</span>
+            </label>
             <select id="categoria" formControlName="categoria"
-              [class.error]="claseForm.get('categoria')?.invalid && claseForm.get('categoria')?.touched">
-              <option value="" disabled selected>Seleccione una categoría</option>
-              @for (categoria of categorias; track categoria) {
-              <option [value]="categoria">{{ categoria }}</option>
-              }
+              [class.border-red-500]="claseForm.get('categoria')?.invalid && claseForm.get('categoria')?.touched" class="w-full h-12 px-3 pr-10 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                     appearance-none focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                     transition duration-150 ease-in-out text-gray-100">
+              <option value="" disabled selected class="text-gray-400">Seleccione una categoría</option>
+              <ng-container *ngFor="let cat of categorias">
+                <option [value]="cat">{{ cat }}</option>
+              </ng-container>
             </select>
-            <div class="select-arrow">
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <!-- Flecha SVG -->
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
+            <p *ngIf="claseForm.get('categoria')?.invalid && claseForm.get('categoria')?.touched"
+              class="text-xs text-red-500">
+              Seleccione una categoría
+            </p>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="sala">Sala<span class="required">*</span></label>
-          <div class="select-wrapper">
+          <!-- Sala -->
+          <div class="space-y-1 relative">
+            <label for="sala" class="block text-sm font-medium text-gray-300">
+              Sala <span class="text-red-400">*</span>
+            </label>
             <select id="sala" formControlName="sala"
-              [class.error]="claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched">
-              <option value="" disabled selected>Seleccione una sala</option>
-              @for (sala of salas; track sala) {
-              <option [value]="sala">{{ sala }}</option>
-              }
+              [class.border-red-500]="claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched" class="w-full h-12 px-3 pr-10 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                     appearance-none focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                     transition duration-150 ease-in-out text-gray-100">
+              <option value="" disabled selected class="text-gray-400">Seleccione una sala</option>
+              <ng-container *ngFor="let s of salas">
+                <option [value]="s">{{ s }}</option>
+              </ng-container>
             </select>
-            <div class="select-arrow">
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
+            <p *ngIf="claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched" class="text-xs text-red-500">
+              Seleccione una sala
+            </p>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="capacidad">Capacidad (alumnos)<span class="required">*</span></label>
-          <input type="number" id="capacidad" formControlName="capacidad" placeholder="Ej: 20"
-            [class.error]="claseForm.get('capacidad')?.invalid && claseForm.get('capacidad')?.touched">
-        </div>
-
-        <div class="form-group">
-          <label for="instructor">Instructor<span class="required">*</span></label>
-          <div class="select-wrapper">
+          <!-- Instructor -->
+          <div class="space-y-1 relative">
+            <label for="instructor" class="block text-sm font-medium text-gray-300">
+              Instructor <span class="text-red-400">*</span>
+            </label>
             <select id="instructor" formControlName="instructor"
-              [class.error]="claseForm.get('instructor')?.invalid && claseForm.get('instructor')?.touched">
-              <option value="" disabled selected>Seleccione una Instructor</option>
-              @for (instructor of instructores; track instructor) {
-              <option [value]="instructor">{{ instructor }}</option>
-              }
+              [class.border-red-500]="claseForm.get('instructor')?.invalid && claseForm.get('instructor')?.touched"
+              class="w-full h-12 px-3 pr-10 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                     appearance-none focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                     transition duration-150 ease-in-out text-gray-100">
+              <option value="" disabled selected class="text-gray-400">
+                Seleccione un instructor
+              </option>
+              <ng-container *ngFor="let instr of instructores">
+                <option [value]="instr">{{ instr }}</option>
+              </ng-container>
             </select>
-            <div class="select-arrow">
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
+            <p *ngIf="claseForm.get('instructor')?.invalid && claseForm.get('instructor')?.touched"
+              class="text-xs text-red-500">
+              Seleccione un instructor
+            </p>
+          </div>
+          <div class="md:col-span-2 space-y-1">
+            <label for="descripcion" class="block text-sm font-medium text-gray-300">
+              Descripción
+            </label>
+            <textarea id="descripcion" formControlName="descripcion" rows="4"
+              placeholder="Describe en qué consiste la clase" class="w-full px-3 py-2 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+               focus:outline-none focus:bg-gray-700 focus:border-gray-500
+               transition duration-150 ease-in-out text-gray-100 resize-none"></textarea>
           </div>
         </div>
       </div>
 
-       
-    </form>
-
-    <div class="form-footer">
-      <div class="required-note">
+      <!-- Footer del formulario -->
+      <div class="pt-4 border-t border-gray-600 flex items-center text-gray-300 text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" x2="12" y1="8" y2="12"></line>
-          <line x1="12" x2="12.01" y1="16" y2="16"></line>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
         </svg>
-        Los campos marcador con <span class="required">*</span> son obligatorios
+        Los campos marcados con <span class="text-red-400">*</span> son obligatorios
       </div>
-    </div>
-  </div>
+    </form>
+  </main>
 </div>

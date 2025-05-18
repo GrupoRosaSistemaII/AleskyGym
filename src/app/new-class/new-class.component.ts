@@ -2,12 +2,11 @@ import { Component } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Router } from "@angular/router"
-import { SidebarComponent } from "../side-panel/side-panel.component";
-
+ 
 @Component({
   selector: "app-new-class",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SidebarComponent],
+  imports: [CommonModule, ReactiveFormsModule,  ],
   templateUrl: "./new-class.component.html",
   styleUrls: ["./new-class.component.css"],
 })

@@ -1,91 +1,136 @@
-<div class="page-layout">
+<div class="flex min-h-screen bg-gray-800 text-gray-100 dark:bg-gray-900 dark:text-gray-100">
+  <!-- Sidebar -->
+ 
+  <!-- Contenido principal -->
+  <main class="flex-1 p-6 sm:p-8  ">
+    <!-- Header -->
+    <header class="  lg:pl-56 mb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-semibold">Registrar Nuevo Instructor</h1>
+        <p class="mt-1 text-sm text-gray-300 dark:text-gray-400">
+          Completa el formulario para añadir un nuevo instructor al gimnasio
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button type="button" (click)="cancelar()"
+          class="h-12 px-4 border border-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancelar
+        </button>
+        <button type="button" (click)="onSubmit()"
+          class="h-12 px-4 bg-gray-600 text-gray-100 rounded-lg hover:bg-gray-700 transition flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Registrar Instructor</span>
+        </button>
+      </div>
+    </header>
 
-    <app-sidebar></app-sidebar>
+    <!-- Formulario -->
+    <form [formGroup]="instructorForm" (ngSubmit)="onSubmit()"
+      class="bg-gray-700 dark:bg-gray-800 rounded-xl shadow p-8 max-w-4xl mx-auto space-y-6">
+      <h2 class="text-xl font-semibold">Información del Instructor</h2>
+      <p class="text-sm text-gray-300">Ingrese los datos personales y de contacto del instructor</p>
 
-
-    <div class="registrar-instructor-container">
-        <div class="header">
-            <div>
-                <h1>Registrar Nuevo Instructor</h1>
-                <p class="subtitle">Completa el formulario para añadir un nuevo instructor al gimnasio</p>
-            </div>
-            <div class="actions">
-                <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()">
-                    <!-- https://feathericons.dev/?search=save&iconset=feather -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-
-                    Registrar Instructor
-                </button>
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Nombre -->
+        <div class="space-y-1">
+          <label for="nombre" class="block text-sm font-medium text-gray-300">Nombre<span class="text-red-400">*</span></label>
+          <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Carlos"
+            [class.border-red-500]="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched"
+            class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                   focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                   transition duration-150 ease-in-out text-gray-100" />
+          <p *ngIf="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched"
+            class="text-xs text-red-500">
+            El nombre es obligatorio
+          </p>
         </div>
 
-
-        <div class="form-container">
-            <form [formGroup]="instructorForm" (ngSubmit)="onSubmit()">
-                <div class="form-section">
-                    <div class="section-header">
-                        <h2>Información del Instructor</h2>
-                        <p class="section-description">Ingrese los datos personales y de contacto del instructor</p>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Carlos"
-                                [class.error]="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched">
-                            <div class="error-message"
-                                *ngIf="instructorForm.get('nombre')?.invalid && instructorForm.get('nombre')?.touched">
-                                El nombre es obligatorio
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="apellido">Apellido</label>
-                            <input type="text" id="apellido" formControlName="apellido" placeholder="Ej: Méndez"
-                                [class.error]="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched">
-                            <div class="error-message"
-                                *ngIf="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched">
-                                El apellido es obligatorio
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefono">Teléfono</label>
-                        <input type="tel" id="telefono" formControlName="telefono" placeholder="Ej: 54852369"
-                            [class.error]="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched">
-                        <div class="error-message"
-                            *ngIf="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched">
-                            Ingrese un número de teléfono válido
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="correo">Correo Electrónico</label>
-                        <input type="email" id="correo" formControlName="correo"
-                            placeholder="Ej: Carlos.mendezejemplo.com"
-                            [class.error]="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched">
-                        <div class="error-message"
-                            *ngIf="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched">
-                            Ingrese un correo electrónico válido
-                        </div>
-                    </div>
-
-                    <!-- <div class="actions">
-                        <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                           
-                        </button>
-                    </div> -->
-                </div>
-            </form>
+        <!-- Apellido -->
+        <div class="space-y-1">
+          <label for="apellido" class="block text-sm font-medium text-gray-300">Apellido<span class="text-red-400">*</span></label>
+          <input id="apellido" type="text" formControlName="apellido" placeholder="Ej: Méndez"
+            [class.border-red-500]="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched"
+            class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                   focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                   transition duration-150 ease-in-out text-gray-100" />
+          <p *ngIf="instructorForm.get('apellido')?.invalid && instructorForm.get('apellido')?.touched"
+            class="text-xs text-red-500">
+            El apellido es obligatorio
+          </p>
         </div>
-    </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="space-y-1">
+        <label for="telefono" class="block text-sm font-medium text-gray-300">Teléfono<span class="text-red-400">*</span></label>
+        <input id="telefono" type="tel" formControlName="telefono" placeholder="Ej: 54852369"
+          [class.border-red-500]="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched"
+          class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                 focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                 transition duration-150 ease-in-out text-gray-100" />
+        <p *ngIf="instructorForm.get('telefono')?.invalid && instructorForm.get('telefono')?.touched"
+          class="text-xs text-red-500">
+          Ingrese un número de teléfono válido
+        </p>
+      </div>
+
+      <!-- Correo -->
+      <div class="space-y-1">
+        <label for="correo" class="block text-sm font-medium text-gray-300">Correo Electrónico <span class="text-red-400">*</span></label>
+        <input id="correo" type="email" formControlName="correo" placeholder="Ej: carlos@mail.com"
+          [class.border-red-500]="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched" class="w-full h-12 px-3 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                 focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                 transition duration-150 ease-in-out text-gray-100" />
+        <p *ngIf="instructorForm.get('correo')?.invalid && instructorForm.get('correo')?.touched"
+          class="text-xs text-red-500">
+          Ingrese un correo electrónico válido
+        </p>
+      </div>
+
+      <!-- Especialidad -->
+      <div class="space-y-1 relative ">
+        <label for="especialidad" class="block text-sm font-medium text-gray-300">
+          Especialidad <span class="text-red-400">*</span>
+        </label>
+        <select id="especialidad" formControlName="especialidad"
+          [class.border-red-500]="instructorForm.get('especialidad')?.invalid && instructorForm.get('especialidad')?.touched"
+          class="w-full h-12 px-3 pr-10 bg-gray-800 dark:bg-gray-900 border border-gray-600 rounded-lg
+                 appearance-none focus:outline-none focus:bg-gray-700 focus:border-gray-500
+                 transition duration-150 ease-in-out text-gray-100">
+          <option value="" disabled selected class="text-gray-400">
+            Seleccione una especialidad <span class="text-red-400">*</span>
+          </option>
+          <ng-container *ngFor="let esp of especialidades">
+            <option [value]="esp">{{ esp }}</option>
+          </ng-container>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </div>
+        <p *ngIf="instructorForm.get('especialidad')?.invalid && instructorForm.get('especialidad')?.touched"
+          class="text-xs text-red-500">
+          Seleccione al menos una especialidad
+        </p>
+        <!-- Footer del  -->
+        <div class="pt-4 border-t border-gray-600 flex items-center text-gray-300 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          Los campos marcados con <span class="text-red-400">*</span> son obligatorios
+        </div>
+      </div>
+    </form>
+  </main>
 </div>

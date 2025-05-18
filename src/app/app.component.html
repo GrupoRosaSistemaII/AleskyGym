@@ -1,3 +1,16 @@
- <app-header></app-header>       
- <router-outlet />
- 
+
+<!-- 1) Header fijo arriba -->
+<app-header
+  class="fixed top-0 inset-x-0 h-16 bg-white shadow z-50">
+</app-header>
+
+<!-- 2) Sidebar fijo a la izquierda, justo bajo el header -->
+<app-sidebar
+  class="fixed top-16 left-0 w-64 bottom-0 bg-gray-100 overflow-y-auto z-40">
+</app-sidebar>
+
+<!-- 3) Contenido principal: desplazado para no tapar ni header ni sidebar -->
+<main
+  class="pt-16 ml-64 h-screen overflow-y-auto">
+  <router-outlet></router-outlet>
+</main>
