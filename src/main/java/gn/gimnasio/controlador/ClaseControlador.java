@@ -1,12 +1,11 @@
 package gn.gimnasio.controlador;
 
-import gn.gimnasio.modelo.Clase;
-import gn.gimnasio.modelo.Instructor;
-import gn.gimnasio.servicio.ClaseServicio;
-import gn.gimnasio.servicio.InstructorServicio;
+import gn.gimnasio.modelo.*;
+import gn.gimnasio.servicio.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,32 +24,79 @@ public class ClaseControlador {
     @Autowired
     private InstructorServicio instructorServicio;
 
+    @Autowired
+    private CategoriaServicio categoriaServicio;
 
-    @GetMapping("/clases") // http://localhost:8080/gimnasio-app/clases
-    public List<Clase> ObtenerClases(){
-        List<Clase> clases = claseServicio.listarClases();
-        logger.info("Clases Obtenidas:");
-        clases.forEach(clase -> logger.info(toString()));
-        return clases;
+    @Autowired
+    private SalaServicio salaServicio;
+
+    @Autowired
+    private EspecialidadServicio especialidadServicio;
+
+    //ENDPOINT PARA LAS CLASES
+    @GetMapping("/clases")
+    public ResponseEntity<List<Clase>> obtenerClases() {
+        return ResponseEntity.ok(claseServicio.listarClases());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        return ResponseEntity.status(500).body("Error: " + e.getMessage());
     }
 
     @PostMapping("/clases")
-    public Clase RegistrarClase(@RequestBody Clase clase){
+    public Clase registrarClase(@RequestBody Clase clase){
         logger.info("Clases ha agregar:{} ",clase);
         return claseServicio.agregarClase(clase);
     }
 
-    @GetMapping("/Instructor") //http://localhost:8080/gimnasio-app/Instructor
-    public List<Instructor> ObtenerInstructor(){
+    // ENDPOINT PARA LOS INSTRUCTORES
+    @GetMapping("/instructores") //http://localhost:8080/gimnasio-app/instructores
+    public List<Instructor> obtenerInstructor(){
         List<Instructor> instructores = instructorServicio.listarInstructor();
         logger.info("Instructores Obtenidos:");
-        instructores.forEach(instructor -> logger.info(toString()));
+        instructores.forEach(instructor -> logger.info(instructor.toString()));
         return instructores;
     }
 
-    @PostMapping("/Instructor")//http://localhost:8080/gimnasio-app/Instructor
-    public Instructor RegistrarInstructor(@RequestBody Instructor instructor){
+    @PostMapping("/instructores")//http://localhost:8080/gimnasio-app/instructores
+    public Instructor registrarInstructor(@RequestBody Instructor instructor){
         logger.info("Instructores ha agregar:{} ",instructor);
         return instructorServicio.agregarInstructor(instructor);
     }
+
+    // ENDPOINT PARA LAS CATEGORIAS
+
+    @GetMapping("/categorias") //http://localhost:8080/gimnasio-app/categorias
+    public List<Categoria> obtenerCategorias(){
+        List<Categoria> categorias = categoriaServicio.listarCategoria();
+        logger.info("Categorias Obtenidas:");
+        categorias.forEach(categoria -> logger.info(categoria.toString()));
+        return categorias;
+    }
+
+    // ENDPOINT PARA LAS SALAS
+    @GetMapping("/salas") //http://localhost:8080/gimnasio-app/salas
+    public List<Sala> obtenerSalas(){
+        List<Sala> salas = salaServicio.listarSalas();
+        logger.info("Salas Obtenidas:");
+        salas.forEach(sala -> logger.info(sala.toString()));
+        return salas;
+    }
+
+    // ENDPOINT PARA LAS ESPECIALIDADES
+    @GetMapping("/especialidades") //http://localhost:8080/gimnasio-app/especialidades
+    public List<Especialidad> obtenerEspecialidades(){
+        List<Especialidad> especialidades= especialidadServicio.obtenerEspecialidad();
+        logger.info("Especialidades:");
+        especialidades.forEach(especialidad -> logger.info(especialidad.toString()));
+        return especialidades;
+    }
+    @PostMapping("/especialidades")
+    public Especialidad registrarEspecialidad(@RequestBody Especialidad especialidad){
+        logger.info("Especialidad a Registra:{} ",especialidad);
+        return  especialidadServicio.registrarEspecialidad(especialidad);
+    }
+
+
 }

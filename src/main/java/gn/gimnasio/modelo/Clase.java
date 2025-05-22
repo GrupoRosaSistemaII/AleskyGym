@@ -29,7 +29,7 @@ public class Clase {
     Integer duracion;
     Integer capacidad;
     @Enumerated(EnumType.STRING)
-    Estado estado;
+    Estado estado = Estado.Disponible;
     Integer id_instructor;
     Integer id_categoria;
     Integer id_sala;

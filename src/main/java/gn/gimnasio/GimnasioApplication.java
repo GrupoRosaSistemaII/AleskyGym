@@ -16,22 +16,6 @@ public class GimnasioApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GimnasioApplication.class, args);
 
-		Clase clase = new Clase();
-		clase.setNombre("Bachata");
-		clase.setDescripcion("bailes de bachatas para cardio");
-		clase.setFecha_inicio(LocalDate.of(2025, 1, 10));
-		clase.setHora_inicio(LocalTime.of(10, 30));
-		clase.setFecha_final(LocalDate.of(2025, 2, 10));
-		clase.setHora_final(LocalTime.of(11, 15));
-		clase.setDuracion(45);
-		clase.setCapacidad(25);
-		clase.setEstado(Estado.Disponible);
-		clase.setId_instructor(1);
-		clase.setId_categoria(2);
-		clase.setId_sala(1);
-		//Imprimir
-		System.out.println(clase);
-
 		Instructor instructor = new Instructor();
 
 		instructor.setNombre("Gilberto");

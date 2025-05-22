@@ -11,6 +11,7 @@ public class ClaseServicio implements IClaseServicio {
 
     @Autowired //Inyeccion de dependencia
     private ClaseRepositorio claseRepositorio;
+
     @Override
     public List<Clase> listarClases() {
         return claseRepositorio.findAll();
