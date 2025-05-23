@@ -2,14 +2,26 @@ import { Component } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormBuilder, type FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Router } from "@angular/router"
- 
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatInputModule } from "@angular/material/input";
+import { MatIconModule } from "@angular/material/icon";
+import { MatOptionModule } from "@angular/material/core";
+
 @Component({
   selector: "app-new-class",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,  ],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatIconModule,
+    MatOptionModule,
+    CommonModule
+  ],
   templateUrl: "./new-class.component.html",
-  styleUrls: ["./new-class.component.css"],
-})
+  styleUrls: ["./new-class.component.css"],})
 export class NewClassComponent {
   claseForm: FormGroup
   resumenVisible = false
@@ -30,19 +42,19 @@ export class NewClassComponent {
       sala: ["", Validators.required],
       capacidad: ["", [Validators.required, Validators.min(1)]],
       instructor: ["", Validators.required],
-        })
+    })
 
-     }
-
-   
-
-   
+  }
 
 
-   
 
 
-   
+
+
+
+
+
+
 
 
   onSubmit() {
@@ -60,6 +72,6 @@ export class NewClassComponent {
   }
 
   cancelar() {
-    this.router.navigate(["/inicio"])
+    this.router.navigate(["/clases"])
   }
 }

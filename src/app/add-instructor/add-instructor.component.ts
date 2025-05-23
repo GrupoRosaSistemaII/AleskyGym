@@ -7,14 +7,13 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
- 
+
 @Component({
   selector: "app-add-instructor",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,  ],
+  imports: [CommonModule, ReactiveFormsModule,],
   templateUrl: "./add-instructor.component.html",
-  styleUrls: ["./add-instructor.component.css"],
-})
+ })
 export class RegistrarInstructorComponent {
   instructorForm: FormGroup;
 
