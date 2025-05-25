@@ -36,8 +36,8 @@ export class InstructorServiceService {
    * @returns Observable con la lista de instructores
    */
   getInstructors(): Observable<Instructor[]> {
-    return this.http.get<Instructor[]>(this.API_URL)
-      .pipe(delay(0)); // Add a small delay to help break potential circular dependencies
+    return this.http.get<Instructor[]>(this.API_URL) //Aqui se obtiene la lista de instructores
+      .pipe(delay(0)); // se agrega un pequeño retraso para ayudar a romper posibles dependencias circulares
   }
 
   /**

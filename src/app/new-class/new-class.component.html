@@ -1,21 +1,35 @@
 <div class="page-layout">
   <app-sidebar></app-sidebar>
 
-
-
   <div class="crear-clase-container">
     <div class="header">
       <div>
         <h1>Crear Nueva Clase</h1>
-        <p class="subtitle">Completa el formulario para añadir una nueva clase al horario</p>
+        <p class="subtitle">
+          Completa el formulario para añadir una nueva clase al horario
+        </p>
       </div>
       <div class="actions">
-        <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+        <button type="button" class="btn btn-outline" (click)="cancelar()">
+          Cancelar
+        </button>
         <button type="button" class="btn btn-primary" (click)="onSubmit()">
           <!-- https://feathericons.dev/?search=save&iconset=feather -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon"
-            fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            class="main-grid-item-icon"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          >
+            <path
+              d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+            />
             <polyline points="17 21 17 13 7 13 7 21" />
             <polyline points="7 3 7 8 15 8" />
           </svg>
@@ -26,37 +40,70 @@
     </div>
 
     <form [formGroup]="claseForm" (ngSubmit)="onSubmit()" class="form-grid">
-       <div class="form-section">
+      <div class="form-section">
         <div class="section-header">
           <h2>Información Básica</h2>
           <p class="section-description">Detalles generales de la clase</p>
         </div>
 
         <div class="form-group">
-          <label for="nombre">Nombre de la clase <span class="required">*</span></label>
-          <input type="text" id="nombre" formControlName="nombre" placeholder="Ej: Yoga flow"
-            [class.error]="claseForm.get('nombre')?.invalid && claseForm.get('nombre')?.touched">
+          <label for="nombre"
+            >Nombre de la clase <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Ej: Yoga flow"
+            [class.error]="
+              claseForm.get('nombre')?.invalid &&
+              claseForm.get('nombre')?.touched
+            "
+          />
         </div>
 
         <div class="form-group">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" formControlName="descripcion" rows="4"
-            placeholder="Describe en qué consiste la clase"></textarea>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            rows="4"
+            placeholder="Describe en qué consiste la clase"
+          ></textarea>
         </div>
 
         <div class="form-group">
-          <label for="categoria">Categoría <span class="required">*</span></label>
+          <label for="categoria"
+            >Categoría <span class="required">*</span></label
+          >
           <div class="select-wrapper">
-            <select id="categoria" formControlName="categoria"
-              [class.error]="claseForm.get('categoria')?.invalid && claseForm.get('categoria')?.touched">
-              <option value="" disabled selected>Seleccione una categoría</option>
+            <select
+              id="categoria"
+              formControlName="categoria"
+              [class.error]="
+                claseForm.get('categoria')?.invalid &&
+                claseForm.get('categoria')?.touched
+              "
+            >
+              <option value="" disabled selected>
+                Seleccione una categoría
+              </option>
               @for (categoria of categorias; track categoria) {
               <option [value]="categoria">{{ categoria }}</option>
               }
             </select>
             <div class="select-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
@@ -66,16 +113,30 @@
         <div class="form-group">
           <label for="sala">Sala<span class="required">*</span></label>
           <div class="select-wrapper">
-            <select id="sala" formControlName="sala"
-              [class.error]="claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched">
+            <select
+              id="sala"
+              formControlName="sala"
+              [class.error]="
+                claseForm.get('sala')?.invalid && claseForm.get('sala')?.touched
+              "
+            >
               <option value="" disabled selected>Seleccione una sala</option>
               @for (sala of salas; track sala) {
               <option [value]="sala">{{ sala }}</option>
               }
             </select>
             <div class="select-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
@@ -83,38 +144,72 @@
         </div>
 
         <div class="form-group">
-          <label for="capacidad">Capacidad (alumnos)<span class="required">*</span></label>
-          <input type="number" id="capacidad" formControlName="capacidad" placeholder="Ej: 20"
-            [class.error]="claseForm.get('capacidad')?.invalid && claseForm.get('capacidad')?.touched">
+          <label for="capacidad"
+            >Capacidad (alumnos)<span class="required">*</span></label
+          >
+          <input
+            type="number"
+            id="capacidad"
+            formControlName="capacidad"
+            placeholder="Ej: 20"
+            [class.error]="
+              claseForm.get('capacidad')?.invalid &&
+              claseForm.get('capacidad')?.touched
+            "
+          />
         </div>
 
         <div class="form-group">
-          <label for="instructor">Instructor<span class="required">*</span></label>
+          <label for="instructor"
+            >Instructor<span class="required">*</span></label
+          >
+
+
           <div class="select-wrapper">
-            <select id="instructor" formControlName="instructor"
-              [class.error]="claseForm.get('instructor')?.invalid && claseForm.get('instructor')?.touched">
-              <option value="" disabled selected>Seleccione una Instructor</option>
-              @for (instructor of instructores; track instructor) {
-              <option [value]="instructor">{{ instructor }}</option>
-              }
+            <select formControlName="instructor" class="form-control">
+              <option value="">Seleccionar instructor</option>
+              <option
+                *ngFor="let instructor of instructores"
+                [value]="instructor.id"
+              >
+                {{ instructor.nombre }}
+              </option>
             </select>
+
+
             <div class="select-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </div>
           </div>
         </div>
       </div>
-
-       
     </form>
 
     <div class="form-footer">
       <div class="required-note">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" x2="12" y1="8" y2="12"></line>
           <line x1="12" x2="12.01" y1="16" y2="16"></line>
