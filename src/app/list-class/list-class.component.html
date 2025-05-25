@@ -27,6 +27,9 @@
             </div>
         </header>
 
+        <app-table [data]="classes" [columns]="cols" [actions]="['modificar','eliminar']" [pageSize]="5"
+            (rowAction)="onRowAction($event)">
+        </app-table>
 
 
 
