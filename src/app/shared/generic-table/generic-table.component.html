@@ -1,42 +1,45 @@
- 
 <div
-  class=" bg-gradient-to-br from-slate-900 to-cyan-900 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-4xl mx-auto space-y-6 border border-cyan-500/20">
-
+  class="bg-gradient-to-br from-slate-900 to-cyan-900 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-4xl mx-auto space-y-6 border border-cyan-500/20">
   <!-- Tabla   -->
-  <table class="w-full h-12 px-3 bg-slate-950/50 border border-cyan-500/30 rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/50 transition duration-150 ease-in-out text-gray-100 placeholder-cyan-200/50"> 
-    
+  <table class="table-auto w-full  rounded-xl overflow-hidden shadow-xl bg-slate-950/30 text-gray-100 text-sm">
+
+
     <!-- Encabezado de la tabla -->
     <thead>
-      <tr class=" text-white">
+
+      <tr
+        class="p-5 bg-gradient-to-r from-cyan-800 to-emerald-800 text-cyan-100 text-left text-sm uppercase tracking-wide">
         <!-- Columnas dinámicas basadas en el array `columns` -->
-        <th *ngFor="let col of columns" class="px-2 py-1 text-left">
+        <th *ngFor="let col of columns" class=" p-5 px-5 py-2 border-t border-cyan-500/10">
           {{ col.header }}
         </th>
         <!-- Columna extra para acciones, si existen -->
-        <th *ngIf="actions.length" class="px-2 py-1 text-left">Acciones</th>
+        <th *ngIf="actions.length" class="px-4 py-3 font-semibold">Acciones</th>
       </tr>
     </thead>
 
-     <tbody>
+    <tbody>
       <!-- Filas generadas dinámicamente según los datos paginados -->
-      <tr *ngFor="let row of pagedData">
-        
+      <tr *ngFor="let row of pagedData"
+        class="border-separate border-spacing-2 odd:bg-slate-900 even:bg-slate-950 hover:bg-slate-700 transition-colors duration-150 rounded-lg">
+
         <!-- Celdas con datos según las columnas definidas -->
-        <td *ngFor="let col of columns" class="border px-2 py-1">
+        <td *ngFor="let col of columns" class="px-4 py-2 border-t border-cyan-500/10 space-x-2">
           {{ row[col.field] }}
         </td>
 
         <!-- Celda de acciones con botones por cada acción disponible -->
-        <td *ngIf="actions.length" class="border px-2 py-1 space-x-1">
-          <button *ngFor="let action of actions" (click)="onAction(action, row)"
-            class="p-2 rounded hover:bg-cyan-600 transition" [ngClass]="{
+        <td *ngIf="actions.length">
+          <button *ngFor="let action of actions" (click)="
+      onAction(action, row)" class=" p-2 rounded-lg hover:bg-cyan-500 transition text-white hover:shadow-cyan-400/30"
+            [ngClass]="{
                     ' text-white': action === 'modificar',
                     '  text-white': action === 'eliminar'
                   }" [title]="action | titlecase">
-            
+
             <!-- Selector para mostrar el ícono según la acción -->
             <ng-container [ngSwitch]="action">
-              
+
               <!-- Ícono para 'modificar' -->
               <svg *ngSwitchCase="'modificar'" width="24" height="24" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -92,7 +95,8 @@
     <!-- Información de página actual -->
     <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
 
-    <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1" class="px-2 py-1 rounded border">
+    <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
+      class="px-3 py-1 rounded-lg border border-cyan-500/30 text-cyan-300 hover:text-white hover:border-cyan-400 transition">
       Siguiente »
     </button>
   </div>
