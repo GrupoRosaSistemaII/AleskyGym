@@ -1,0 +1,11 @@
+gn\gimnasio\repositorio\ClaseRepositorio.class
+gn\gimnasio\servicio\ClaseServicio.class
+gn\gimnasio\modelo\Instructor.class
+gn\gimnasio\servicio\IInstructorServicio.class
+gn\gimnasio\servicio\InstructorServicio.class
+gn\gimnasio\modelo\Clase.class
+gn\gimnasio\GimnasioApplication.class
+gn\gimnasio\modelo\Estado.class
+gn\gimnasio\controlador\ClaseControlador.class
+gn\gimnasio\repositorio\InstructorRepositorio.class
+gn\gimnasio\servicio\IClaseServicio.class
