@@ -23,10 +23,13 @@ export class NewClassComponent implements OnInit {
   salas = ["Sala 1", "Sala 2", "Sala 3", "Sala Principal", "Terraza"]
   instructores: Instructor[] = []
 
+  private API_URL = 'http://localhost:8080/gimnasio-app/Clases'// URL del API de instructores
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private instructorService: InstructorServiceService
+    private instructorService: InstructorServiceService,
+
   ) {
     this.claseForm = this.fb.group({
       nombre: ["", Validators.required],
@@ -44,7 +47,7 @@ export class NewClassComponent implements OnInit {
   }
 
   cargarInstructores() {
-    this.instructorService.getInstructors().subscribe({
+    this.instructorService.getInstructors(this.API_URL).subscribe({
       next: (instructores: Instructor[]) => {
         this.instructores = instructores;
         console.log('Instructores cargados:', this.instructores);
