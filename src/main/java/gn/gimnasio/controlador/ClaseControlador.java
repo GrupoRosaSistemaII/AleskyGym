@@ -24,18 +24,16 @@ public class ClaseControlador {
 
     @Autowired
     private ClaseServicio claseServicio;
-
     @Autowired
     private InstructorServicio instructorServicio;
-
     @Autowired
     private CategoriaServicio categoriaServicio;
-
     @Autowired
     private SalaServicio salaServicio;
-
     @Autowired
     private EspecialidadServicio especialidadServicio;
+    @Autowired
+    private UsuarioServicio usuarioServicio;
 
     //ENDPOINT PARA LAS CLASES
     @GetMapping("/clases")
@@ -121,6 +119,12 @@ public class ClaseControlador {
         return categorias;
     }
 
+    @PostMapping("/categorias")
+    public Categoria registrarCategoria(@RequestBody Categoria categoria){
+        logger.info("Categoria a Registra:{} ",categoria);
+        return  categoriaServicio.agregarCategoria(categoria);
+    }
+
     // ENDPOINT PARA LAS SALAS
     @GetMapping("/salas") //http://localhost:8080/gimnasio-app/salas
     public List<Sala> obtenerSalas(){
@@ -143,6 +147,22 @@ public class ClaseControlador {
         logger.info("Especialidad a Registra:{} ",especialidad);
         return  especialidadServicio.registrarEspecialidad(especialidad);
     }
+
+    // ENDPOINT PARA LOS USUARIOS
+    @PostMapping("/usuarios")
+    public Usuario registrarUsuario(@RequestBody Usuario usuario){
+        logger.info("usuario a Registra:{} ",usuario);
+        return usuarioServicio.agregarUsuario(usuario);
+    }
+
+    @GetMapping("/usuarios") //http://localhost:8080/gimnasio-app/especialidades
+    public List<Usuario> obtenerUsuarios(){
+        List<Usuario> usuarios= usuarioServicio.listarUsuario();
+        logger.info("Usuarios:");
+        usuarios.forEach(usuario -> logger.info(usuario.toString()));
+        return usuarios;
+    }
+
 
 
 }
