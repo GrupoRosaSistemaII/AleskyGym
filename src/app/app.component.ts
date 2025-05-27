@@ -4,8 +4,11 @@ import { Router } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
 import { SidebarComponent } from './side-panel/side-panel.component';
 import { CommonModule } from '@angular/common';
- 
- 
+
+/*
+ * Componente raíz de la aplicación.
+ * Define la estructura general incluyendo el encabezado, panel lateral y vistas principales.
+*/
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,8 +18,11 @@ import { CommonModule } from '@angular/common';
   template: `
     <app-instructors-list></app-instructors-list>
     <app-classes-list></app-classes-list>
-  `
+  ` // Renderiza directamente los componentes de lista en el HTML
 })
+/** Constructor con inyección de dependencias del router.
+  * @param router Manejador de navegación de Angular
+**/
 export class AppComponent {
   constructor(public router: Router) { }
 

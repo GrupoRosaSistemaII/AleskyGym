@@ -1,43 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ColumnDef } from '../shared/generic-table/generic-table.component';
 import { Router } from '@angular/router';
 import { GenericTableComponent } from "../shared/generic-table/generic-table.component";
+import { GetDataService } from '../services/get-data.service';
+import { Instructor } from '../interfaces/instructor';
+import { catchError, of } from 'rxjs';
 
+/**
+ * Componente para listar instructores en una tabla con paginación.
+ * Permite visualizar, agregar, modificar y eliminar instructores.
+ */
 @Component({
   selector: 'app-instructors',
   templateUrl: './list-instructor.component.html',
   standalone: true,
-  imports: [GenericTableComponent],
+  imports: [GenericTableComponent], // Importa la tabla genérica para mostrar datos
 })
-export class ListInstructorComponent {
-  constructor(private router: Router) {
-  }
-  instructors = [  // Datos de ejemplo, reemplazar con datos reales
-    { nombre: 'Juan López', cedula: '67890', clases: 3 },
-    { nombre: 'María García', cedula: '54321', clases: 5 },
-  
-    { nombre: 'Carlos Fernández', cedula: '11223', clases: 2 },
-    { nombre: 'Laura Martínez', cedula: '44556', clases: 6 },
-  
-    { nombre: 'Pedro Sánchez', cedula: '78901', clases: 1 },
-    { nombre: 'Ana Pérez', cedula: '12345', clases: 4 },
-    { nombre: 'Ana Pérez', cedula: '12345', clases: 4 },
-  
-    
-  ];
+export class ListInstructorComponent implements OnInit {
+  // Configuración de paginación
+  currentPage = 0;
+  pageSize = 5;
+  totalElements = 0;
+  instructors: Instructor[] = [];
 
-
-  cols: ColumnDef[] = [
+  // Definición de columnas para la tabla de instructores
+  cols = [
     { field: 'nombre', header: 'Nombre' },
-    { field: 'cedula', header: 'Cédula' },
-    { field: 'clases', header: 'Clases' },
+    { field: 'apellido', header: 'Apellido' },
+    { field: 'telefono', header: 'Teléfono' },
+    { field: 'correo', header: 'Correo' }
   ];
 
-  onRowAction(event: { action: string, row: any }) {
-    if (event.action === 'modificar') {
-      // lógica para editar instructor
-    } else if (event.action === 'eliminar') {
-      // lógica para eliminar instructor
+  /**
+   * Constructor con inyección de dependencias.
+   * @param instructoresService Servicio para obtener datos de los instructores.
+   * @param router Servicio de enrutamiento para navegación.
+   */
+
+  constructor(private instructoresService: GetDataService, private router: Router) { }
+
+  /** 
+   * Método que se ejecuta al inicializar el componente.
+   * Carga la lista de instructores desde el servicio.
+   */
+  ngOnInit() {
+    this.loadInstructors();
+  }
+
+
+  //Obtiene los instructores paginados desde el servicio.  
+  loadInstructors() {
+    this.instructoresService.obtenerInstructoresPaginados(this.currentPage, this.pageSize)
+      .subscribe(response => {
+        this.instructors = response.content;
+        this.totalElements = response.totalElements;
+      });
+  }
+
+  /**
+    * Actualiza la página cuando el usuario cambia de página en la tabla.
+    * @param newPage Nueva página seleccionada.
+  */
+  onPageChange(newPage: number) {
+    this.currentPage = newPage;
+    this.loadInstructors();
+  }
+
+  /**
+  * Maneja acciones sobre la tabla, como eliminar o modificar un instructor.
+  * @param event Contiene la acción y la fila afectada.
+  */
+  onAction(event: { action: string, row: any }) {
+    if (event.action === 'eliminar') {
+      this.eliminarInstructor(event.row.id);
+    } else if (event.action === 'modificar') {
+      this.modificarInstructor(event.row);
     }
   }
 
@@ -45,11 +82,11 @@ export class ListInstructorComponent {
     this.router.navigate(["/instructores/registrar"]);
   }
 
-  editarInstructor(instructor: any) {
-    console.log('Editar:', instructor);
+  eliminarInstructor(id: number) {
+    // Lógica para eliminar
   }
 
-  eliminarInstructor(instructor: any) {
-    console.log('Eliminar:', instructor);
+  modificarInstructor(instructor: any) {
+    // Lógica para modificar
   }
 }

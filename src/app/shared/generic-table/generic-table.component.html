@@ -1,42 +1,35 @@
- 
-<div
-  class=" bg-gradient-to-br from-slate-900 to-cyan-900 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-4xl mx-auto space-y-6 border border-cyan-500/20">
-
-  <!-- Tabla   -->
-  <table class="w-full h-12 px-3 bg-slate-950/50 border border-cyan-500/30 rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/50 transition duration-150 ease-in-out text-gray-100 placeholder-cyan-200/50"> 
-    
-    <!-- Encabezado de la tabla -->
+<div class="bg-gradient-to-br from-slate-900 to-cyan-900 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-4xl mx-auto space-y-6 border border-cyan-500/20">
+  <!-- Tabla -->
+  <table class="w-full h-12 px-3 bg-slate-950/50 border border-cyan-500/30 rounded-xl focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/50 transition duration-150 ease-in-out text-gray-100 placeholder-cyan-200/50">
+    <!-- Encabezado -->
     <thead>
-      <tr class=" text-white">
-        <!-- Columnas dinámicas basadas en el array `columns` -->
+      <tr class="text-white">
         <th *ngFor="let col of columns" class="px-2 py-1 text-left">
           {{ col.header }}
         </th>
-        <!-- Columna extra para acciones, si existen -->
         <th *ngIf="actions.length" class="px-2 py-1 text-left">Acciones</th>
       </tr>
     </thead>
 
-     <tbody>
-      <!-- Filas generadas dinámicamente según los datos paginados -->
-      <tr *ngFor="let row of pagedData">
-        
-        <!-- Celdas con datos según las columnas definidas -->
+    <!-- Cuerpo -->
+    <tbody>
+      <tr *ngFor="let row of data" class="hover:bg-cyan-900/20 transition-colors">
         <td *ngFor="let col of columns" class="border px-2 py-1">
           {{ row[col.field] }}
         </td>
-
-        <!-- Celda de acciones con botones por cada acción disponible -->
+        
         <td *ngIf="actions.length" class="border px-2 py-1 space-x-1">
-          <button *ngFor="let action of actions" (click)="onAction(action, row)"
-            class="p-2 rounded hover:bg-cyan-600 transition" [ngClass]="{
-                    ' text-white': action === 'modificar',
-                    '  text-white': action === 'eliminar'
-                  }" [title]="action | titlecase">
+          <button 
+            *ngFor="let action of actions" 
+            (click)="onAction(action, row)"
+            class="p-2 rounded hover:bg-cyan-600 transition"
+            [ngClass]="{
+              'text-blue-400': action === 'modificar',
+              'text-red-400': action === 'eliminar'
+            }">
             
-            <!-- Selector para mostrar el ícono según la acción -->
+            <!-- Íconos -->
             <ng-container [ngSwitch]="action">
-              
               <!-- Ícono para 'modificar' -->
               <svg *ngSwitchCase="'modificar'" width="24" height="24" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -75,7 +68,6 @@
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </g>
               </svg>
-
             </ng-container>
           </button>
         </td>
@@ -83,17 +75,28 @@
     </tbody>
   </table>
 
-  <!-- Sección de paginación con botones para avanzar y retroceder -->
-  <div class="mt-2 flex justify-end items-center space-x-2">
-    <button (click)="prevPage()" [disabled]="currentPage === 0" class="px-2 py-1 rounded border">
-      « Anterior
-    </button>
-
-    <!-- Información de página actual -->
-    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
-
-    <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1" class="px-2 py-1 rounded border">
-      Siguiente »
-    </button>
+  <!-- Paginación mejorada -->
+  <div class="mt-2 flex justify-between items-center">
+    <span class="text-cyan-200">
+      Mostrando {{ data.length }} de {{ totalElements }} registros
+    </span>
+    
+    <div class="flex items-center space-x-2">
+      <button 
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 0"
+        class="px-3 py-1 rounded border border-cyan-500 hover:bg-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed">
+        « Anterior
+      </button>
+      
+      <span class="px-3">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+      
+      <button 
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage >= totalPages - 1"
+        class="px-3 py-1 rounded border border-cyan-500 hover:bg-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed">
+        Siguiente »
+      </button>
+    </div>
   </div>
 </div>

@@ -27,13 +27,10 @@
             </div>
         </header>
 
-        <app-table [data]="classes" [columns]="cols" [actions]="['modificar','eliminar']" [pageSize]="5"
-            (rowAction)="onRowAction($event)">
+        <!-- Tabla actualizada -->
+        <app-table [data]="clases" [columns]="columns" [actions]="['modificar', 'eliminar']" [pageSize]="pageSize"
+            [currentPage]="currentPage" [totalElements]="totalElements" (pageChanged)="onPageChange($event)"
+            (actionClicked)="onAction($event)">
         </app-table>
-
-
-
-
-
     </main>
 </div>
