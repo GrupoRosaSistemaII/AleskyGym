@@ -5,6 +5,10 @@ import gn.gimnasio.servicio.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +54,27 @@ public class ClaseControlador {
         return claseServicio.agregarClase(clase);
     }
 
+    @GetMapping("/clasesPaginadas")
+    public ResponseEntity<Page<Clase>> listarClasesPaginadas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+
+        // Configurar ordenamiento
+        Sort.Direction direction = Sort.Direction.ASC;
+        if(sortDirection != null && sortDirection.equalsIgnoreCase("desc")) {
+            direction = Sort.Direction.DESC;
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction, sortBy != null ? sortBy : "nombre")
+        );
+        return ResponseEntity.ok(claseServicio.listarClasesPaginadas(pageable));
+    }
+
     // ENDPOINT PARA LOS INSTRUCTORES
     @GetMapping("/instructores") //http://localhost:8080/gimnasio-app/instructores
     public List<Instructor> obtenerInstructor(){
@@ -57,6 +82,27 @@ public class ClaseControlador {
         logger.info("Instructores Obtenidos:");
         instructores.forEach(instructor -> logger.info(instructor.toString()));
         return instructores;
+    }
+
+    @GetMapping("/instructoresPaginados")
+    public ResponseEntity<Page<Instructor>> listarInstructoresPaginados(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+
+        // Configurar ordenamiento
+        Sort.Direction direction = Sort.Direction.ASC;
+        if(sortDirection != null && sortDirection.equalsIgnoreCase("desc")) {
+            direction = Sort.Direction.DESC;
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction, sortBy != null ? sortBy : "nombre")
+        );
+        return ResponseEntity.ok(instructorServicio.listarInstructoresPaginados(pageable));
     }
 
     @PostMapping("/instructores")//http://localhost:8080/gimnasio-app/instructores

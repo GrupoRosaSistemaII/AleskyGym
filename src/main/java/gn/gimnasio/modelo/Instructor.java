@@ -1,14 +1,15 @@
 package gn.gimnasio.modelo;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+/**
+ * Representa a un instructor en el sistema de gimnasio.
+ * Utiliza JPA para la persistencia y Lombok para reducir código.
+ */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data // Genera automáticamente métodos como toString, equals, y hashCode
+@NoArgsConstructor // Constructor sin argumentos requerido por JPA
+@AllArgsConstructor // Constructor con todos los atributos
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +17,5 @@ public class Instructor {
     String nombre;
     String apellido;
     String telefono;
-    String Correo;
-
+    String correo;
 }
