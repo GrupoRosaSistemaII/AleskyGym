@@ -17,6 +17,25 @@ import Swal from 'sweetalert2'; // para mostrar mensajes
   templateUrl: "./add-instructor.component.html",
 })
 
+class InstructorEspecialidad{
+  constructor(private nombreInstructor: string,
+     private idInstructor: number,
+     private especialidad : string []) {}
+
+  getNombreInstructor(): string {
+    return this.nombreInstructor;
+  }
+
+  setNombreInstructor(nombre: string): void {
+    this.nombreInstructor = nombre;
+  }
+
+  setEspecialidad(especialidad: string[]): void {
+    this.especialidad.push(...especialidad);
+  }
+
+}
+
 /**
  * RegistrarInstructorComponent Class
  * Este componente es responsable de manejar el registro de nuevos instructores.
