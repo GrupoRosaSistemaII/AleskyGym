@@ -140,6 +140,64 @@
         Los campos marcados con <span class="text-red-400">*</span> son
         obligatorios
       </div>
+
+      <!-- Label para selección de especialidad -->
+      <div class="flex justify-center">
+        <label class="block text-2xl font-bold text-cyan-400 mb-4 text-center w-full">
+          Selección de Especialidad
+        </label>
+      </div>
+
+
+      <!--Select con los instructores-->
+      <div class="space-y-1">
+        <label for="instructor-select" class="block text-sm font-medium text-cyan-400">Seleccionar Instructor Disponible</label>
+        <select id="instructor-select" (change)="onInstructorChange($event.target)"
+            class="w-full h-12 px-3 bg-slate-950/70 border border-cyan-400 rounded-xl focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-cyan-500/60 transition duration-200 ease-in-out text-cyan-200 text-lg font-semibold shadow-md hover:shadow-cyan-500/20 appearance-none">
+          <option value="" disabled selected>Seleccione un instructor</option>
+          <option *ngFor="let instructor of instructores" [ngValue]="instructor">
+            {{ instructor.id_instructor }} {{ instructor.nombre }} {{ instructor.apellido }}
+          </option>
+        </select>
+      </div>
+
+      <!--Seccion de chips/Tags-->
+    <div class="mt-4">
+      <mat-chip-listbox multiple>
+        <mat-chip-option *ngFor="let especialidad of especialidades"
+          (click)="onEspecialidadSelected(especialidad)"
+          class="!text-white !border-white"
+          [ngClass]="{'!bg-cyan-700 !border-cyan-300': especialidadSeleccionada.includes(especialidad)}"
+          [removable]="false">
+          {{ especialidad }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+
+    <!-- Botón de Enviar atractivo con animación -->
+    <div class="flex justify-center mt-8">
+      <button
+        type="submit"
+        (click)="onsubmitEspecialidad()"
+        class="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-bold rounded-xl shadow-lg group transition-all duration-300
+          bg-gradient-to-r from-cyan-600 to-emerald-600 text-white
+          hover:from-cyan-400 hover:to-emerald-400 hover:scale-105
+          disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span class="absolute left-0 w-full h-0 transition-all duration-300 ease-out bg-cyan-400 opacity-30 group-hover:h-full group-hover:top-0"></span>
+        <span class="relative flex items-center gap-2">
+          <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="M12 5l7 7-7 7"></path>
+          </svg>
+          Enviar
+        </span>
+      </button>
+    </div>
     </form>
+
+
+
   </main>
 </div>

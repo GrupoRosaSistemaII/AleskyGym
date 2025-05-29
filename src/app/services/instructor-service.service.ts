@@ -28,9 +28,10 @@ export class InstructorServiceService {
    * @param id_instructor ID del instructor
    * @returns Observable con los datos del instructor
    */
-  getInstructorById(id_instructor: number): Observable<Instructor> {
-    return this.http.get<Instructor>(`${this.API_URL}/${id_instructor}`)
-      .pipe(delay(0)); 
+  getInstructores(): Observable<any[]> {
+    const instructoresAll =  this.http.get<Instructor[]>(this.API_URL) // Obtiene todos los instructores
+      .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
+    return instructoresAll;
   }
 
   /**

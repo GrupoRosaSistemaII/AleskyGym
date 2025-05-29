@@ -1,26 +1,20 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { InstructorServiceService } from "../services/instructor-service.service";
-import Swal from 'sweetalert2'; // para mostrar mensajes 
-
+import Swal from 'sweetalert2';
+import { MatChipsModule } from "@angular/material/chips";
 
 /**
- * @Component Decorator
- * Define los metadatos para el RegistrarInstructorComponent.
+ * Clase que representa la relación entre un instructor y sus especialidades.
  */
-@Component({
-  selector: "app-add-instructor",
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: "./add-instructor.component.html",
-})
-
-class InstructorEspecialidad{
-  constructor(private nombreInstructor: string,
-     private idInstructor: number,
-     private especialidad : string []) {}
+class InstructorEspecialidad {
+  constructor(
+    private nombreInstructor: string,
+    private idInstructor: number,
+    private especialidad: string[]
+  ) {}
 
   getNombreInstructor(): string {
     return this.nombreInstructor;
@@ -34,64 +28,63 @@ class InstructorEspecialidad{
     this.especialidad.push(...especialidad);
   }
 
+  getIdInstructor(): number {
+    return this.idInstructor;
+  }
 }
 
-/**
- * RegistrarInstructorComponent Class
- * Este componente es responsable de manejar el registro de nuevos instructores.
- * Incluye un formulario para capturar los detalles del instructor y utiliza un servicio para enviar los datos al backend.
- */
+@Component({
+  selector: "app-add-instructor",
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatChipsModule],
+  templateUrl: "./add-instructor.component.html",
+})
 export class RegistrarInstructorComponent {
-  /**
-   * instructorForm: FormGroup
-   * Define el grupo de formularios para el formulario del instructor.
-   */
   instructorForm: FormGroup;
+  especialidades: string[] = [
+    "Cardio",
+    "Fuerza",
+    "Flexibilidad",
+    "Resistencia",
+    "Entrenamiento funcional"
+  ];
+  especialidadSeleccionada: string[] = [];
+  instructores: any[] = [];
+  instructorSeleccionado: string = "";
 
-  /**
-   * Constructor para el RegistrarInstructorComponent.
-   * @param {FormBuilder} fb - El servicio FormBuilder para crear el formulario.
-   * @param {Router} router - El servicio Router para la navegación.
-   * @param {InstructorServiceService} instructorService - El InstructorServiceService para realizar solicitudes HTTP.
-   */
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private instructorService: InstructorServiceService
   ) {
-    // Inicializa el instructorForm con controles de formulario y validadores
     this.instructorForm = this.fb.group({
       nombre: ["", Validators.required],
       apellido: ["", Validators.required],
       cedula: ["", Validators.required],
-
       telefono: ["", [Validators.required, Validators.pattern("^[0-9]{6,12}$")]],
       correo: ["", [Validators.required, Validators.email]],
     });
+
+
   }
 
-  /**
-   * onSubmit Method
-   * Maneja el envío del formulario del instructor.
-   * Comprueba si el formulario es válido, envía los datos al backend y navega a la lista de instructores.
-   */
-  onSubmit() {
-    if (this.instructorForm.valid) {
-      // Imprime los datos del formulario por consola
-      console.log(this.instructorForm.value);
 
-      // Enviar datos al backend
+  ngOnInit(): void {
+    this.getInstructores(); // Obtener la lista de instructores al iniciar el componente
+  }
+
+  // Enviar formulario de registro de instructor
+  onSubmit(): void {
+    if (this.instructorForm.valid) {
       this.instructorService.postInstructor(this.instructorForm.value).subscribe({
-        next: (response) => {
+        next: () => {
           Swal.fire({
             title: '¡Instructor registrado!',
             text: 'El instructor ha sido agregado correctamente.',
             icon: 'success',
-            width: '400px', // Cambia el ancho del moda
+            width: '400px',
             confirmButtonText: 'Confirmar',
-            customClass: {
-              popup: 'swal-wide' // Clase CSS personalizada
-            }
+            customClass: { popup: 'swal-wide' }
           }).then(() => {
             this.instructorForm.reset();
             this.router.navigate(["/instructores"]);
@@ -111,18 +104,79 @@ export class RegistrarInstructorComponent {
     }
   }
 
-  cancelar() {
+  // Cambiar instructor seleccionado
+  onInstructorChange(event: any): void {
+    this.instructorSeleccionado = event.value;
+  }
+
+  // Enviar especialidades seleccionadas para el instructor
+  onsubmitEspecialidad(): void {
+    const nombreInstructor = this.instructorSeleccionado;
+    const idInstructor = this.instructores.findIndex(
+      instructor => instructor === this.instructorSeleccionado
+    ) + 1;
+
+    const instructorEspecialidad = new InstructorEspecialidad(
+      nombreInstructor,
+      idInstructor,
+      [...this.especialidadSeleccionada]
+    );
+
+    this.instructorForm.reset();
+    this.especialidadSeleccionada = [];
+
+    console.log('Objeto InstructorEspecialidad:', instructorEspecialidad);
+  }
+
+  // Cancelar y navegar a clases
+  cancelar(): void {
     this.router.navigate(["/clases"]);
   }
 
-  /**
-   * campoInvalido Method
-   * Método de ayuda para determinar si un campo del formulario no es válido y debe mostrar un error.
-   * @param {string} campo - El nombre del campo del formulario para verificar.
-   * @returns {boolean} - True si el campo no es válido y debe mostrar un error, false de lo contrario.
-   */
+  // Obtener todos los instructores
+  getInstructores(): void {
+    this.instructorService.getInstructores().subscribe({
+      next: (instructores) => {
+        this.instructores = instructores;
+      },
+      error: (error) => {
+        console.error('Error al obtener instructores:', error);
+        this.instructores = [];
+      }
+    });
+  }
+
+  // Verificar si un campo es inválido
   campoInvalido(campo: string): boolean {
     const control = this.instructorForm.get(campo);
     return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  // Agregar especialidad seleccionada
+  onEspecialidadSelected(especialidad: string): void {
+    if (especialidad && !this.especialidadSeleccionada.includes(especialidad)) {
+      this.especialidadSeleccionada.push(especialidad);
+      console.log('Especialidad seleccionada:', especialidad);
+    }
+
+    const idInstructor = this.instructorForm.get('id')?.value || '';
+    const nombreInstructor = this.instructorSeleccionado;
+
+    const instructorEspecialidad = new InstructorEspecialidad(
+      nombreInstructor,
+      idInstructor,
+      [...this.especialidadSeleccionada]
+    );
+
+    console.log('Objeto InstructorEspecialidad:', instructorEspecialidad);
+  }
+
+  // Alternar especialidad en la lista
+  onEspecialidadToggle(especialidad: string): void {
+    if (this.especialidades.includes(especialidad)) {
+      this.especialidades = this.especialidades.filter(e => e !== especialidad);
+    } else {
+      this.especialidades.push(especialidad);
+    }
   }
 }
