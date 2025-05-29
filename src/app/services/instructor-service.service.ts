@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, delay } from 'rxjs';
 import { Instructor } from '../interfaces/instructor'; // Se Trae la clase instructor
+import { InstructorEspecialidad } from '../add-instructor/add-instructor.component'; // Se Trae la clase instructor especialidad
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,11 @@ export class InstructorServiceService {
    */
   postInstructor(instructor: Instructor): Observable<Instructor> {
     return this.http.post<Instructor>(this.API_URL, instructor)
+      .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
+  }
+
+  postInstructorEspecialidad(instructorEspecialidad: InstructorEspecialidad): Observable<InstructorEspecialidad> {
+    return this.http.post<InstructorEspecialidad>(`${this.API_URL}/InstructorEspecialidad`, instructorEspecialidad) // Envía los datos de instructor especialidad al backend
       .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
   }
 

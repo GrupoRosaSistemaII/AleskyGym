@@ -9,7 +9,7 @@ import { MatChipsModule } from "@angular/material/chips";
 /**
  * Clase que representa la relación entre un instructor y sus especialidades.
  */
-class InstructorEspecialidad {
+export class InstructorEspecialidad {
   constructor(
     private nombreInstructor: string,
     private idInstructor: number,
@@ -71,6 +71,7 @@ export class RegistrarInstructorComponent {
 
   ngOnInit(): void {
     this.getInstructores(); // Obtener la lista de instructores al iniciar el componente
+    console.log(`Instructores Cargados para su uso`);
   }
 
   // Enviar formulario de registro de instructor
@@ -112,9 +113,7 @@ export class RegistrarInstructorComponent {
   // Enviar especialidades seleccionadas para el instructor
   onsubmitEspecialidad(): void {
     const nombreInstructor = this.instructorSeleccionado;
-    const idInstructor = this.instructores.findIndex(
-      instructor => instructor === this.instructorSeleccionado
-    ) + 1;
+    const idInstructor = this.instructores.find(instructor => instructor.nombre === nombreInstructor)?.id_instructor;
 
     const instructorEspecialidad = new InstructorEspecialidad(
       nombreInstructor,
@@ -125,7 +124,24 @@ export class RegistrarInstructorComponent {
     this.instructorForm.reset();
     this.especialidadSeleccionada = [];
 
-    console.log('Objeto InstructorEspecialidad:', instructorEspecialidad);
+    this.instructorService.postInstructorEspecialidad(instructorEspecialidad).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Especialidad registrada!',
+          text: 'La especialidad ha sido agregada correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Confirmar'
+        });
+      },
+      error: () => {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo registrar la especialidad',
+          icon: 'error',
+          confirmButtonText: 'Intentar nuevamente'
+        });
+      }
+    });
   }
 
   // Cancelar y navegar a clases
@@ -156,19 +172,13 @@ export class RegistrarInstructorComponent {
   onEspecialidadSelected(especialidad: string): void {
     if (especialidad && !this.especialidadSeleccionada.includes(especialidad)) {
       this.especialidadSeleccionada.push(especialidad);
-      console.log('Especialidad seleccionada:', especialidad);
+      Swal.fire({
+        title: 'Especialidad agregada',
+        text: `La especialidad ${especialidad} ha sido agregada.`,
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
     }
-
-    const idInstructor = this.instructorForm.get('id')?.value || '';
-    const nombreInstructor = this.instructorSeleccionado;
-
-    const instructorEspecialidad = new InstructorEspecialidad(
-      nombreInstructor,
-      idInstructor,
-      [...this.especialidadSeleccionada]
-    );
-
-    console.log('Objeto InstructorEspecialidad:', instructorEspecialidad);
   }
 
   // Alternar especialidad en la lista
