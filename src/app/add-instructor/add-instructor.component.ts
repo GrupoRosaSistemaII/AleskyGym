@@ -11,26 +11,26 @@ import { MatChipsModule } from "@angular/material/chips";
  */
 export class InstructorEspecialidad {
   constructor(
-    private nombreInstructor: string,
     private idInstructor: number,
     private especialidad: string[]
   ) {}
 
-  getNombreInstructor(): string {
-    return this.nombreInstructor;
+  setIdInstructor(id: number): void {
+    this.idInstructor = id;
   }
 
-  setNombreInstructor(nombre: string): void {
-    this.nombreInstructor = nombre;
+  getIdInstructor(): number {
+    return this.idInstructor;
   }
 
   setEspecialidad(especialidad: string[]): void {
     this.especialidad.push(...especialidad);
   }
 
-  getIdInstructor(): number {
-    return this.idInstructor;
+  getEspecialidad(): string[] {
+    return this.especialidad;
   }
+
 }
 
 @Component({
@@ -112,11 +112,9 @@ export class RegistrarInstructorComponent {
 
   // Enviar especialidades seleccionadas para el instructor
   onsubmitEspecialidad(): void {
-    const nombreInstructor = this.instructorSeleccionado;
-    const idInstructor = this.instructores.find(instructor => instructor.nombre === nombreInstructor)?.id_instructor;
+    const idInstructor = this.instructores.find(instructor => instructor.nombre === this.instructorSeleccionado)?.id_instructor;
 
     const instructorEspecialidad = new InstructorEspecialidad(
-      nombreInstructor,
       idInstructor,
       [...this.especialidadSeleccionada]
     );
