@@ -25,15 +25,14 @@ export class InstructorServiceService {
   }
 
   postInstructorEspecialidad(instructorEspecialidad: InstructorEspecialidad): Observable<InstructorEspecialidad> {
-    return this.http.post<InstructorEspecialidad>(`${this.API_URL}/InstructorEspecialidad`, instructorEspecialidad) // Envía los datos de instructor especialidad al backend
+    return this.http.post<InstructorEspecialidad>(`${this.API_URL}/instructor-especialidades`, instructorEspecialidad) // Envía los datos de instructor especialidad al backend
       .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
   }
 
   /**
-   * Obtiene un instructor por su ID
-   * @param id_instructor ID del instructor
-   * @returns Observable con los datos del instructor
-   */
+   * Obtiene la lista de instructores desde el backend
+   * @returns Observable con la lista de instructores
+   **/
   getInstructores(): Observable<any[]> {
     const instructoresAll =  this.http.get<Instructor[]>(this.API_URL) // Obtiene todos los instructores
       .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
