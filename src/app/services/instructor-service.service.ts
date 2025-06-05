@@ -59,4 +59,10 @@ export class InstructorServiceService {
     return this.http.delete<any>(`${this.API_URL}/${id}`)
       .pipe(delay(0)); // Add a small delay to help break potential circular dependencies
   }
+
+
+  obtenerEspecialidades(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.API_URL}/especialidades`)
+      .pipe(delay(0)); // Agrega un pequeño retraso para ayudar a romper posibles dependencias circulares.
+  }
 }

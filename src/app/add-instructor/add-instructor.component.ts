@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { InstructorServiceService } from "../services/instructor-service.service";
 import Swal from 'sweetalert2';
 import { MatChipsModule } from "@angular/material/chips";
+import { Observable } from "rxjs";
 
 /**
  * Clase que representa la relación entre un instructor y sus especialidades.
@@ -41,13 +42,7 @@ export class InstructorEspecialidad {
 })
 export class RegistrarInstructorComponent {
   instructorForm: FormGroup;
-  especialidades: string[] = [
-    "Cardio",
-    "Fuerza",
-    "Flexibilidad",
-    "Resistencia",
-    "Entrenamiento funcional"
-  ];
+  especialidades : string[] = []
   especialidadSeleccionada: string[] = [];
   instructores: any[] = [];
   instructorSeleccionado: string = "";
@@ -72,6 +67,22 @@ export class RegistrarInstructorComponent {
   ngOnInit(): void {
     this.getInstructores(); // Obtener la lista de instructores al iniciar el componente
     console.log(`Instructores Cargados para su uso`);
+
+    this.obtenerEspecialidades(); // Cargar especialidades al iniciar el componente
+
+  }
+
+  // Obtener especialidades desde el servicio
+  obtenerEspecialidades(): void {
+    this.instructorService.obtenerEspecialidades().subscribe({
+      next: (especialidades) => {
+        this.especialidades = especialidades;
+        console.log(`Carga Exitosa`);
+      },
+      error: (error) => {
+        console.error(`Error al cargar especialidades: ${error}`);
+      }
+    });
   }
 
   // Enviar formulario de registro de instructor
