@@ -3,9 +3,10 @@ name: CI Pipeline - Ubuntu 20.04
 # Definir cuándo se ejecuta el workflow
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, pipeline ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
+  workflow_dispatch:
 
 # Definir los jobs del pipeline
 jobs:
@@ -16,7 +17,7 @@ jobs:
     
     steps:
     - name: Checkout del código
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Actualizar sistema
       run: |
@@ -56,7 +57,7 @@ jobs:
         echo "timestamp=$(date)" >> installation_status.txt
     
     - name: Subir artefactos de instalación
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: installation-artifacts
         path: installation_status.txt
@@ -69,10 +70,10 @@ jobs:
     
     steps:
     - name: Checkout del código
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Descargar artefactos de instalación
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: installation-artifacts
     
@@ -143,7 +144,7 @@ jobs:
         cat test_report.md
     
     - name: Subir reporte de tests
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-report
         path: test_report.md
@@ -156,7 +157,7 @@ jobs:
     
     steps:
     - name: Descargar artefactos
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: test-report
     
