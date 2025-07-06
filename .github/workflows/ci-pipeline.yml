@@ -95,15 +95,83 @@ jobs:
 
     - name: Crear test de Python
       run: |
-        echo 'import sys\nimport subprocess\n\ndef test_python_version():\n    """Test que Python 3 está instalado correctamente"""\n    assert sys.version_info >= (3, 6), "Python 3.6+ requerido"\n    print("✅ Python version test passed")\n\ndef test_pip_installation():\n    """Test que pip está funcionando"""\n    result = subprocess.run(['pip3', '--version'], capture_output=True, text=True)\n    assert result.returncode == 0, "pip3 no está funcionando correctamente"\n    print("✅ Pip installation test passed")\n\ndef test_requests_import():\n    """Test que requests se puede importar"""\n    try:\n        import requests\n        print("✅ Requests import test passed")\n    except ImportError:\n        assert False, "No se puede importar requests"' > tests/test_python.py
+        cat > tests/test_python.py << 'EOF'
+import sys
+import subprocess
+
+def test_python_version():
+    """Test que Python 3 está instalado correctamente"""
+    assert sys.version_info >= (3, 6), "Python 3.6+ requerido"
+    print("✅ Python version test passed")
+
+def test_pip_installation():
+    """Test que pip está funcionando"""
+    result = subprocess.run(["pip3", "--version"], capture_output=True, text=True)
+    assert result.returncode == 0, "pip3 no está funcionando correctamente"
+    print("✅ Pip installation test passed")
+
+def test_requests_import():
+    """Test que requests se puede importar"""
+    try:
+        import requests
+        print("✅ Requests import test passed")
+    except ImportError:
+        assert False, "No se puede importar requests"
+EOF
 
     - name: Crear test de Node.js
       run: |
-        echo "const { exec } = require('child_process');\n\n// Test que Node.js está instalado\nconsole.log('Node.js version:', process.version);\nif (process.version < 'v12.0.0') {\n    console.error('❌ Node.js version muy antigua');\n    process.exit(1);\n}\nconsole.log('✅ Node.js version test passed');\n\n// Test que npm está funcionando\nexec('npm --version', (error, stdout, stderr) => {\n    if (error) {\n        console.error('❌ npm test failed:', error);\n        process.exit(1);\n    }\n    console.log('✅ npm test passed, version:', stdout.trim());\n});" > tests/test_node.js
+        cat > tests/test_node.js << 'EOF'
+const { exec } = require('child_process');
+
+// Test que Node.js está instalado
+console.log('Node.js version:', process.version);
+if (process.version < 'v12.0.0') {
+    console.error('❌ Node.js version muy antigua');
+    process.exit(1);
+}
+console.log('✅ Node.js version test passed');
+
+// Test que npm está funcionando
+exec('npm --version', (error, stdout, stderr) => {
+    if (error) {
+        console.error('❌ npm test failed:', error);
+        process.exit(1);
+    }
+    console.log('✅ npm test passed, version:', stdout.trim());
+});
+EOF
 
     - name: Crear test del sistema
       run: |
-        echo '#!/bin/bash\nset -e\n\necho "🔍 Ejecutando tests del sistema..."\n\n# Test de curl\necho "Testing curl..."\ncurl --version > /dev/null\necho "✅ curl test passed"\n\n# Test de wget\necho "Testing wget..."\nwget --version > /dev/null\necho "✅ wget test passed"\n\n# Test de git\necho "Testing git..."\ngit --version > /dev/null\necho "✅ git test passed"\n\n# Test de nginx\necho "Testing nginx..."\nnginx -v > /dev/null 2>&1\necho "✅ nginx test passed"\n\necho "🎉 Todos los tests del sistema pasaron correctamente"' > tests/test_system.sh
+        cat > tests/test_system.sh << 'EOF'
+#!/bin/bash
+set -e
+
+echo "🔍 Ejecutando tests del sistema..."
+
+# Test de curl
+echo "Testing curl..."
+curl --version > /dev/null
+echo "✅ curl test passed"
+
+# Test de wget
+echo "Testing wget..."
+wget --version > /dev/null
+echo "✅ wget test passed"
+
+# Test de git
+echo "Testing git..."
+git --version > /dev/null
+echo "✅ git test passed"
+
+# Test de nginx
+echo "Testing nginx..."
+nginx -v > /dev/null 2>&1
+echo "✅ nginx test passed"
+
+echo "🎉 Todos los tests del sistema pasaron correctamente"
+EOF
         chmod +x tests/test_system.sh
     
     - name: Ejecutar tests de Python
