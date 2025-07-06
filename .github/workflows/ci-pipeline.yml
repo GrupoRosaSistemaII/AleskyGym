@@ -1,4 +1,4 @@
-name: CI Pipeline - Ubuntu 20.04
+name: CI Pipeline - Ubuntu latest
 
 # Definir cuándo se ejecuta el workflow
 on:
@@ -13,7 +13,7 @@ jobs:
   # Job 1: Instalación de dependencias
   installation:
     name: "Instalación de Dependencias"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout del código
@@ -23,9 +23,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get upgrade -y
-    
-    - name: Instalar dependencias del sistema
-      run: |
         sudo apt-get install -y \
           curl \
           wget \
@@ -65,7 +62,7 @@ jobs:
   # Job 2: Ejecutar tests de prueba
   testing:
     name: "Ejecutar Tests de Prueba"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: installation
     
     steps:
@@ -152,7 +149,7 @@ jobs:
   # Job 3: Verificación final y mensaje de éxito
   verification:
     name: "Verificación Final"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [installation, testing]
     
     steps:
