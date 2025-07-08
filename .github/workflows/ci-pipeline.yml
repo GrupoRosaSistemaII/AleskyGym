@@ -3,7 +3,7 @@ name: CI Pipeline - Ubuntu latest
 # Definir cuándo se ejecuta el workflow
 on:
   push:
-    branches: [ main, develop, pipeline ]
+    branches: [ main, develop, pipeline, pipeline-dev ]
   pull_request:
     branches: [ main, develop ]
   workflow_dispatch:
@@ -151,7 +151,7 @@ jobs:
     name: "Build y Deploy a Vercel"
     runs-on: ubuntu-latest
     needs: [installation, testing]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/pipeline'
+    if: github.ref == 'refs/heads/main' || (github.ref == 'refs/heads/pipeline' && github.ref != 'refs/heads/pipeline-dev')
     
     steps:
     - name: Checkout del código
@@ -187,7 +187,8 @@ jobs:
   verification:
     name: "Verificación Final"
     runs-on: ubuntu-latest
-    needs: [installation, testing, deploy]
+    needs: [installation, testing]
+    if: always() && (needs.installation.result == 'success' && needs.testing.result == 'success')
     
     steps:
     - name: Descargar artefactos
@@ -216,14 +217,24 @@ jobs:
     - name: Mensaje de éxito final
       run: |
         echo "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉"
-        echo "🎊 ¡PIPELINE COMPLETADO CON ÉXITO! 🎊"
+        if [ "${{ github.ref }}" == "refs/heads/pipeline-dev" ]; then
+          echo "🧪 ¡PIPELINE DE DESARROLLO COMPLETADO! 🧪"
+          echo "🎯 MODO: DESARROLLO - SIN DEPLOY A PRODUCCIÓN"
+        else
+          echo "🎊 ¡PIPELINE COMPLETADO CON ÉXITO! 🎊"
+        fi
         echo "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉"
         echo ""
         echo "✅ Instalación: COMPLETADA"
         echo "✅ Tests: TODOS PASARON"
         echo "✅ Verificación: EXITOSA"
         echo ""
-        echo "🚀 El sistema está listo para usar en Ubuntu 20.04"
+        if [ "${{ github.ref }}" == "refs/heads/pipeline-dev" ]; then
+          echo "🧪 Modo: DESARROLLO - Seguro para experimentar"
+          echo "🚫 Deploy: DESHABILITADO (no va a producción)"
+        else
+          echo "🚀 El sistema está listo para usar en Ubuntu 20.04"
+        fi
         echo "📊 Fecha de completación: $(date)"
         echo "🔧 Entorno: Ubuntu 20.04"
         echo "🌟 Estado: PERFECTO"
